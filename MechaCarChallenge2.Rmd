@@ -1,0 +1,99 @@
+---
+title: "MechaCar"
+output: pdf_document
+date: '2022-06-03'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+options(scipen = 999)
+library(dplyr)
+MechaCarFile <- read.csv("MechaCar_mpg.csv",stringsAsFactors = F)
+
+View(MechaCarFile)
+MechaCarFile
+
+
+```
+
+## Including Plots
+
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+# Perform linear regression using the lm() function. In the lm() function, pass in all six variables (i.e., columns), # and add the dataframe you created in Step 4 as the data parameter.
+
+MechaCarLinearRegresion <-lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD, data = MechaCarFile)
+
+summary(MechaCarLinearRegresion)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+```{r}
+Suspension_Coil_File <- read.csv("Suspension_Coil.csv",stringsAsFactors = F)
+Suspension_Coil_File
+#View(Suspension_Coil_File)
+total_summary <- Suspension_Coil_File %>% 
+  summarize(mean=mean(PSI),median=median(PSI),variance=var(PSI),sd=sd(PSI))
+total_summary
+```
+
+#Lot Summary
+```{r}
+lot_summary <- Suspension_Coil_File %>% group_by(Manufacturing_Lot) %>%
+  summarize(mean=mean(PSI),median=median(PSI),variance=var(PSI),sd=sd(PSI))
+lot_summary
+```
+
+#t.test() to determinee PSI across all lots is statistically different from the population mean of 1,500 pounds per square inch.
+
+```{r}
+all_lots <- t.test(Suspension_Coil_File$PSI,mu=1500) 
+all_lots
+```
+
+```{r}
+lot1 <- t.test(subset(Suspension_Coil_File, Manufacturing_Lot=="Lot1")$PSI,mu=1500)
+lot1
+
+```
+
+
+
+
+
+
+```{r}
+lot2 <- t.test(subset(Suspension_Coil_File, Manufacturing_Lot=="Lot2")$PSI,mu=1500)
+lot2
+
+```
+
+
+
+```{r}
+lot3 <- t.test(subset(Suspension_Coil_File, Manufacturing_Lot=="Lot3")$PSI,mu=1500)
+lot3
+
+```
+
+
+
+
+
+
